@@ -2,6 +2,10 @@ package com.example.entity;
 
 import javax.persistence.*;
 
+
+
+
+
 /**
  * This is a class that models an Account.
  *
