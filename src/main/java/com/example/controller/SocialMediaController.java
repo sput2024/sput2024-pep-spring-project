@@ -4,13 +4,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
 import com.example.repository.AccountRepository;
@@ -28,36 +30,29 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/register")
-
 public class SocialMediaController {
- 
-  
-   // @SuppressWarnings("static-access")
-  //  @PostMapping("/register")
-  //  public ResponseEntity register(@PathVariable Account account) 
-    @GetMapping(value = "/register", params = {"username", "password"})
-    public ResponseEntity <?> getSearchFormatAndAmount(@RequestParam String username,@RequestParam String password){
-        // Logic to register a new user
-         //String username2 = account.getUsername();
-      //  String password = account.getUsername();
-     // account.setUsername(username);
-       System.out.println("TESTING!!!!!!");
-       System.out.println(AccountService.getAllAccounts());
-        if (username==null||username.isEmpty()){
-            return ResponseEntity.status(400).body("error");
-        }
-        if (password==null||password.length()<4){
-            return ResponseEntity.status(400).body("error");
-        }
-        if (AccountService.getAccountByUsername(username)==true){
-            return ResponseEntity.status(409).body("error");
-        }
-  
-        Account accountRegistered = AccountService.Register(username,password);
-        return ResponseEntity.status(200).body(accountRegistered);
+    @RequestMapping(value="/register", method = RequestMethod.POST)
+    @ResponseBody
+   //public Account register(Account account) {
+    public ResponseEntity<Account> register(@RequestBody Account account) {
+        if (account.getUsername()==null||account.getUsername().isEmpty()){
+                return ResponseEntity.status(400).body(null);
+               }
+        if (account.getPassword()==null||account.getPassword().length()<4){
+            return ResponseEntity.status(400).body(null);
+          }
 
+          //    if (AccountService.getAccountByUsername(username)==true){
+    ///        return ResponseEntity.status(409).body("error");
+    //    }
+        System.out.println("testing!!!!!!!!!!!!!!!!");
+      //  return "ID: " + username;
+      Account accountRegistered = AccountService.Register(account);
+      return ResponseEntity.status(200).body(accountRegistered);
+   
     }
-
-
 }
+    
+ 
+
+

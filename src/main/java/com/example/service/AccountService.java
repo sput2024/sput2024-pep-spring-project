@@ -14,6 +14,7 @@ public class AccountService {
     static AccountRepository accountRepository;
     public AccountService(AccountRepository accountRepository){
         AccountService.accountRepository = accountRepository;
+      
     }
     
 
@@ -36,14 +37,14 @@ public class AccountService {
             return val;
     }
 
-    public static Account Register(String username, String password){
+    public static Account Register(Account account){
        // Optional<Classroom> classroomOptional = classroomRepository.findById(classroomId);
        // if(classroomOptional.isPresent()){
               Account account1 = new Account(); //classroomOptional.get();
              
             //account1.setUsername(account.getUsername());
-            account1.setUsername(username);
-            account1.setUsername(password);
+            account1.setUsername(account.getUsername());
+            account1.setUsername(account.getPassword());
            // account1.setPassword(account.getPassword());
       //      classroomRepository.save(classroom);
             accountRepository.save(account1);
