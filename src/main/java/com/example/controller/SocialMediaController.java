@@ -39,19 +39,43 @@ public class SocialMediaController {
                 return ResponseEntity.status(400).body(null);
                }
         if (account.getPassword()==null||account.getPassword().length()<4){
-            return ResponseEntity.status(400).body(null);
+           return ResponseEntity.status(400).body(null);
           }
+        if (AccountService.getAccountByUsername(account).equals("True")){
+          System.out.println("testinh!!!!!!!!!!!!!");
+            return ResponseEntity.status(409).body(null);
+             }
 
-          //    if (AccountService.getAccountByUsername(username)==true){
-    ///        return ResponseEntity.status(409).body("error");
-    //    }
-        System.out.println("testing!!!!!!!!!!!!!!!!");
-      //  return "ID: " + username;
-      Account accountRegistered = AccountService.Register(account);
-      return ResponseEntity.status(200).body(accountRegistered);
-   
-    }
+        if (AccountService.getAccountByUsername(account).equals("False")){ 
+            Account accountRegistered = AccountService.Register(account);
+            AccountService.addAccount(accountRegistered);
+            return ResponseEntity.status(200).body(accountRegistered);} 
+        
+        return ResponseEntity.status(400).body(null);
 }
+
+@RequestMapping(value="/login", method = RequestMethod.POST)
+@ResponseBody
+public ResponseEntity<Object> verifyLogin(@RequestBody Account account) {
+   Object orOne;
+   orOne = AccountService.verifyLogin(account);   
+  if (orOne!=null){ 
+    
+    return ResponseEntity.status(200).body(orOne);
+  } 
+
+
+  return ResponseEntity.status(401).body(null);
+
+}
+
+
+
+
+
+
+}
+
     
  
 

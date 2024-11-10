@@ -1,5 +1,5 @@
 package com.example.service;
-
+import java.util.*;
 
 import java.util.List;
 import com.example.entity.Account;
@@ -18,41 +18,69 @@ public class AccountService {
     }
     
 
-    public Account addAccount(Account account){
+    public static Account addAccount(Account account){
         return accountRepository.save(account);
     }
     
-    public static Boolean getAccountByUsername(String username){
-        Boolean val = False;
+    public static String getAccountByUsername(Account account){
+        String val = "False";
         List<Account> accounts = getAllAccounts();
-        for (int i=0; i < accounts.size();i++){
-        if (accounts(1).get(i).contains(username)){
-            val = True;
-            return val;
+        
+        for (int i = 0; i < accounts.size();i++){
+            Object or = accounts.get(i);
+            
+            String temp = ((Account) or).getUsername();
+           
+            String tempTwo = account.getUsername();
+          
+            if (temp.equals(tempTwo)){
+                val = "True";
+              
+                return val;
+            }
         }
-        }
-  //   if(Account.account(username)==null){
-   //     return true;
-  //   }
-            return val;
+        return val;
     }
 
+    public static Object verifyLogin(Account account){
+        String username = account.getUsername();
+        String password = account.getPassword();
+        String val = "False";
+        List<Account> accounts = getAllAccounts();
+        
+        for (int i = 0; i < accounts.size();i++){
+            Object or = accounts.get(i);
+            
+            String temp = ((Account) or).getUsername();
+
+            String tempPass = ((Account) or).getPassword();
+           
+          
+            if (temp.equals(username)&&tempPass.equals(password)){
+              
+                return or;
+            }
+        }
+        return null;
+    }
+
+
+
+
+      
+
     public static Account Register(Account account){
-       // Optional<Classroom> classroomOptional = classroomRepository.findById(classroomId);
-       // if(classroomOptional.isPresent()){
-              Account account1 = new Account(); //classroomOptional.get();
-             
-            //account1.setUsername(account.getUsername());
+       
+            Account account1 = new Account(); //classroomOptional.get();
             account1.setUsername(account.getUsername());
-            account1.setUsername(account.getPassword());
-           // account1.setPassword(account.getPassword());
-      //      classroomRepository.save(classroom);
+            account1.setPassword(account.getPassword());
             accountRepository.save(account1);
+          
             return account1;
     }
 
     public static List<Account> getAllAccounts() {
-        //System.out.println("test"+accountRepository.findAll());
+       
         return accountRepository.findAll();
     }
 
