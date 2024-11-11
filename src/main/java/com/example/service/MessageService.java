@@ -25,7 +25,7 @@ public class MessageService {
 
    public static String searchMessageByID(int ID){
     String val = "yes";
-    List<Message> messages = messageRepository.findAll();;
+    List<Message> messages = messageRepository.findAll();
     Message message1 = new Message(); //classroomOptional.get();
    // message1.setMessageText(message.getMessageText());
    // message1.setPostedBy(message.getPostedBy());
@@ -49,7 +49,42 @@ public class MessageService {
     return messageRepository.save(message);
 }
 
+public static List<Message> getAllMessages() {
+       
+    return messageRepository.findAll();
+}
 
+
+
+
+public static Message getMessageById(Integer Id) {
+    Message message1 = messageRepository.getById(Id);
+  
+
+   return message1;
+}
+
+public static String verifyMessageById(Integer Id) {
+       
+    String val = "yes";
+    List<Message> messages = messageRepository.findAll();
+  
+
+    for (int i = 0; i < messages.size();i++){
+        Object or = messages.get(i);
+        
+        Integer temp = ((Message) or).getMessageId();
+
+        if (temp.equals(Id)){
+          
+           return val;
+        }
+    }
+
+
+    val = "no";
+    return val;
+}
 
 
 

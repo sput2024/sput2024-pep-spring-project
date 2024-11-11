@@ -101,6 +101,32 @@ public ResponseEntity<Message> createMessage(@RequestBody Message message) {
 
 
 
+@RequestMapping(value="/messages", method = RequestMethod.GET)
+@ResponseBody
+public ResponseEntity <List<Message>> getAllMessages() {
+  
+   
+   List<Message> messageList = MessageService.getAllMessages();
+   return ResponseEntity.status(200).body(messageList);
+
+}
+
+
+@RequestMapping(value="/messages/{messageId}", method = RequestMethod.GET)
+@ResponseBody
+public ResponseEntity<Message> getMessageById(@PathVariable("messageId") Integer messageId) {
+  System.out.println("testing!!!!!");
+  System.out.println(messageId);
+   
+   String val= MessageService.verifyMessageById(messageId);
+  
+if (val=="no"){
+  return ResponseEntity.status(200).body(null);
+}
+   Message message1= MessageService.getMessageById(messageId);
+   return ResponseEntity.status(200).body(message1);
+
+}
 
 
 
