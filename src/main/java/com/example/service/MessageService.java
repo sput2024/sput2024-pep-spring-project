@@ -89,7 +89,13 @@ public static String verifyMessageById(Integer Id) {
 
 
 
+public static Integer DeleteMessageById(Integer Id) {
+    Integer val = 1;
+    messageRepository.deleteById(Id);
+  
 
+   return val;
+}
 
 
 

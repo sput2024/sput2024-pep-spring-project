@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -115,8 +116,7 @@ public ResponseEntity <List<Message>> getAllMessages() {
 @RequestMapping(value="/messages/{messageId}", method = RequestMethod.GET)
 @ResponseBody
 public ResponseEntity<Message> getMessageById(@PathVariable("messageId") Integer messageId) {
-  System.out.println("testing!!!!!");
-  System.out.println(messageId);
+
    
    String val= MessageService.verifyMessageById(messageId);
   
@@ -127,6 +127,35 @@ if (val=="no"){
    return ResponseEntity.status(200).body(message1);
 
 }
+
+
+
+
+@DeleteMapping(value="/messages/{messageId}")
+//@ResponseBody
+public ResponseEntity<Integer> DeleteMessageById(@PathVariable(value = "messageId") Integer messageId) {
+  System.out.println("testing!!!!!");
+  System.out.println(messageId);
+  Integer val1=1;
+  String val= MessageService.verifyMessageById(messageId);
+  System.out.println(val);
+  
+if (val=="no"){
+  return ResponseEntity.status(200).body(null);
+}
+   val1= MessageService.DeleteMessageById(messageId);
+   return ResponseEntity.status(200).body(val1);
+
+}
+
+
+
+
+
+
+
+
+
 
 
 
