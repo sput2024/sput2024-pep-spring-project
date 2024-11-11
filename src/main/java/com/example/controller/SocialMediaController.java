@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.repository.AccountRepository;
+import com.example.repository.MessageRepository;
 import com.example.service.AccountService;
+import com.example.service.MessageService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +45,7 @@ public class SocialMediaController {
            return ResponseEntity.status(400).body(null);
           }
         if (AccountService.getAccountByUsername(account).equals("True")){
-          System.out.println("testinh!!!!!!!!!!!!!");
+      
             return ResponseEntity.status(409).body(null);
              }
 
@@ -64,10 +67,38 @@ public ResponseEntity<Object> verifyLogin(@RequestBody Account account) {
     return ResponseEntity.status(200).body(orOne);
   } 
 
-
   return ResponseEntity.status(401).body(null);
 
 }
+
+@RequestMapping(value="/messages", method = RequestMethod.POST)
+@ResponseBody
+public ResponseEntity<Message> createMessage(@RequestBody Message message) {
+  System.out.println(message.getPostedBy());
+  if (message.getMessageText().length()<=255&&message.getMessageText().isEmpty()==false&&message.getPostedBy()>=0){ 
+     // Message messageCreated = MessageService.CreateMessage(message);
+     
+     String val;
+     val = MessageService.searchMessageByID(message.getPostedBy());
+
+     if (val.equals("yes")){
+         MessageService.addMessage(message);
+         return ResponseEntity.status(200).body(message);
+  } 
+}
+
+  if (message.getPostedBy()==null){ 
+     Message messageCreated = MessageService.CreateMessage(message);
+     MessageService.addMessage(messageCreated);
+
+   return ResponseEntity.status(200).body(message);
+ } 
+
+
+  return ResponseEntity.status(400).body(null);
+
+}
+
 
 
 

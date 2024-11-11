@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService {
     
-    private static final Boolean False = null;
-    private static final Boolean True = null;
+    
     static AccountRepository accountRepository;
     public AccountService(AccountRepository accountRepository){
         AccountService.accountRepository = accountRepository;
@@ -74,7 +73,7 @@ public class AccountService {
             Account account1 = new Account(); //classroomOptional.get();
             account1.setUsername(account.getUsername());
             account1.setPassword(account.getPassword());
-            accountRepository.save(account1);
+           // accountRepository.save(account1);
           
             return account1;
     }
