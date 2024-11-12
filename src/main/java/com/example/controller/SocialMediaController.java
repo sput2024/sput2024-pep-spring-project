@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -75,7 +76,7 @@ public ResponseEntity<Object> verifyLogin(@RequestBody Account account) {
 @RequestMapping(value="/messages", method = RequestMethod.POST)
 @ResponseBody
 public ResponseEntity<Message> createMessage(@RequestBody Message message) {
-  System.out.println(message.getPostedBy());
+
   if (message.getMessageText().length()<=255&&message.getMessageText().isEmpty()==false&&message.getPostedBy()>=0){ 
      // Message messageCreated = MessageService.CreateMessage(message);
      
@@ -134,11 +135,10 @@ if (val=="no"){
 @DeleteMapping(value="/messages/{messageId}")
 //@ResponseBody
 public ResponseEntity<Integer> DeleteMessageById(@PathVariable(value = "messageId") Integer messageId) {
-  System.out.println("testing!!!!!");
-  System.out.println(messageId);
+
   Integer val1=1;
   String val= MessageService.verifyMessageById(messageId);
-  System.out.println(val);
+ 
   
 if (val=="no"){
   return ResponseEntity.status(200).body(null);
@@ -147,6 +147,45 @@ if (val=="no"){
    return ResponseEntity.status(200).body(val1);
 
 }
+
+
+
+@RequestMapping(value="accounts/{accountId}/messages", method = RequestMethod.GET)
+@ResponseBody
+public ResponseEntity<List<Message>> getMessageByaccountId(@PathVariable("accountId") Integer accountId) {
+  List<Message> messages1 = new ArrayList<Message>();
+
+  String val= MessageService.searchMessageByID(accountId);  //check to see if account ID (PERSON) exists
+  String val2= MessageService.verifyMessageByUserExists(accountId); //check to see if message by user exists
+
+if (val=="no"||val2=="no"){
+  return ResponseEntity.status(200).body(messages1);
+}
+   List<Message> messages= MessageService.getMessagesByUser(accountId);
+   return ResponseEntity.status(200).body(messages);
+
+}
+
+
+
+@PatchMapping(value="/messages/{messageId}")
+//@ResponseBody
+public ResponseEntity<Integer> UpdateMessageById(@PathVariable(value = "messageId") Integer messageId,@RequestBody Message messageText) {
+
+  Integer val1=1;
+  String messageText1 = messageText.getMessageText(); 
+  String val= MessageService.verifyMessageById(messageId);
+ 
+  
+if (val=="yes"&&messageText1.length()<=255&&messageText1.isEmpty()==false){
+   MessageService.UpdateMessageById(messageId, messageText1);
+  return ResponseEntity.status(200).body(val1);
+}
+  
+   return ResponseEntity.status(400).body(null);
+
+}
+
 
 
 
